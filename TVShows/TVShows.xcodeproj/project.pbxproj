@@ -12,6 +12,7 @@
 		2C83B32F20EE6F3000781AB8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C83B32D20EE6F3000781AB8 /* LaunchScreen.storyboard */; };
 		2CB8CFD620F65E95004F7C26 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CB8CFD520F65E95004F7C26 /* Login.storyboard */; };
 		2CB8CFD820F65EA7004F7C26 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB8CFD720F65EA7004F7C26 /* LoginViewController.swift */; };
+		33C1778565261A34D4A23337 /* Pods_TVShows.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A1E54965A68D83CEC9EFB7 /* Pods_TVShows.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,9 @@
 		2C83B33020EE6F3000781AB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CB8CFD520F65E95004F7C26 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		2CB8CFD720F65EA7004F7C26 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		494DC936602E081CCD93B37F /* Pods-TVShows.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVShows.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TVShows/Pods-TVShows.debug.xcconfig"; sourceTree = "<group>"; };
+		79581B3FC9EC3D2023A7F436 /* Pods-TVShows.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVShows.release.xcconfig"; path = "Pods/Target Support Files/Pods-TVShows/Pods-TVShows.release.xcconfig"; sourceTree = "<group>"; };
+		97A1E54965A68D83CEC9EFB7 /* Pods_TVShows.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TVShows.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33C1778565261A34D4A23337 /* Pods_TVShows.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +46,8 @@
 				2CB8CFD420F65E7A004F7C26 /* Login */,
 				2C83B32320EE6F2E00781AB8 /* TVShows */,
 				2C83B32220EE6F2E00781AB8 /* Products */,
+				8B0C19EAF96D01319D6CFC94 /* Pods */,
+				B1A63F8757D4BCEBC99C8C12 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,6 +79,23 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		8B0C19EAF96D01319D6CFC94 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				494DC936602E081CCD93B37F /* Pods-TVShows.debug.xcconfig */,
+				79581B3FC9EC3D2023A7F436 /* Pods-TVShows.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B1A63F8757D4BCEBC99C8C12 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97A1E54965A68D83CEC9EFB7 /* Pods_TVShows.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -79,9 +103,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2C83B33320EE6F3000781AB8 /* Build configuration list for PBXNativeTarget "TVShows" */;
 			buildPhases = (
+				D8AD62A5F6DE331079B449D1 /* [CP] Check Pods Manifest.lock */,
 				2C83B31D20EE6F2E00781AB8 /* Sources */,
 				2C83B31E20EE6F2E00781AB8 /* Frameworks */,
 				2C83B31F20EE6F2E00781AB8 /* Resources */,
+				5384C33F64462914C5A652A3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -137,6 +163,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5384C33F64462914C5A652A3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-TVShows/Pods-TVShows-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TVShows/Pods-TVShows-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8AD62A5F6DE331079B449D1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TVShows-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2C83B31D20EE6F2E00781AB8 /* Sources */ = {
@@ -278,6 +343,7 @@
 		};
 		2C83B33420EE6F3000781AB8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 494DC936602E081CCD93B37F /* Pods-TVShows.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -295,6 +361,7 @@
 		};
 		2C83B33520EE6F3000781AB8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 79581B3FC9EC3D2023A7F436 /* Pods-TVShows.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
