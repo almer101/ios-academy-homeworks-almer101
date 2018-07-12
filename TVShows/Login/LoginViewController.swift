@@ -16,6 +16,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var count = 0
     
+    //MARK: -Private-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
