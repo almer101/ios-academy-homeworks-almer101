@@ -11,53 +11,44 @@ import Alamofire
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var rememberMeButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
     
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    var count = 0
-    
-    //MARK: -Private-
+    private let pinkColor = UIColor(red: 255.0/255.0, green: 117.0/255.0, blue: 140.0/255.0, alpha: 1)
+    private let lightGrayColor = UIColor(red: 224.0/255.0, green: 224.0/255.0, blue: 224.0/255.0, alpha: 1)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        label.text = String(count)
-        label.textColor = UIColor.blue
-        label.font = UIFont(name: "Avenir-HeavyOblique", size: 30)
-        label.frame.size = CGSize(width: 100, height: 40)
-        button.layer.cornerRadius = 15
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
-        activityIndicator.isHidden = true
+        
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        activityIndicator.startAnimating()
-        activityIndicator.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            sleep(3)
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-        }
-    }
-
-    @IBAction func buttonTapped(_ sender: UIButton) {
-        sender.isEnabled = false
-        activityIndicator.isHidden = false
-        
-        count += 1
-        label.text = String(count)
-        
-        activityIndicator.startAnimating()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            sleep(3)
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            sender.isEnabled = true
-        }
     }
     
+    func setupUI() {
+        setTextFieldBottomBorder(textField: usernameTextField)
+        setTextFieldBottomBorder(textField: passwordTextField)
+        
+        loginButton.backgroundColor = pinkColor
+        loginButton.setTitleColor(UIColor.white, for: .normal)
+        loginButton.layer.cornerRadius = 8
+        
+        rememberMeButton.setTitleColor(pinkColor, for: .normal)
+    }
+    
+    func setTextFieldBottomBorder(textField: UITextField) {
+        let border = CALayer()
+        let width = CGFloat(1.0)
+        border.borderColor = lightGrayColor.cgColor
+        border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width: textField.frame.size.width, height: textField.frame.size.height)
+        border.borderWidth = width
+        textField.layer.addSublayer(border)
+        textField.layer.masksToBounds = true
+    }
+
 }
