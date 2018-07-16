@@ -51,4 +51,18 @@ class LoginViewController: UIViewController {
         textField.layer.masksToBounds = true
     }
 
+    @IBAction func loginAction(_ sender: UIButton) {
+        guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
+            return
+        }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    @IBAction func registerAction(_ sender: UIButton) {
+        guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
+            return
+        }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
