@@ -8,5 +8,7 @@ target 'TVShows' do
   # Pods for TVShows
 
 pod 'Alamofire'
+pod 'CodableAlamofire'
+pod 'SVProgressHUD'
 
 end
