@@ -18,7 +18,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var rememberMeButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     
-    private let pinkColor = UIColor(red: 255.0/255.0, green: 117.0/255.0, blue: 140.0/255.0, alpha: 1)
     private var user: User? = nil
     private var currentUserData: UserData? = nil
     
@@ -29,11 +28,11 @@ class LoginViewController: UIViewController {
     }
     
     func setupUI() {
-        loginButton.backgroundColor = pinkColor
+        loginButton.backgroundColor = UIColor.tvShowsPink
         loginButton.setTitleColor(UIColor.white, for: .normal)
         loginButton.layer.cornerRadius = 8
         
-        rememberMeButton.setTitleColor(pinkColor, for: .normal)
+        rememberMeButton.setTitleColor(UIColor.tvShowsPink, for: .normal)
     }
 
     func getLoginInputData() -> [String:String] {
