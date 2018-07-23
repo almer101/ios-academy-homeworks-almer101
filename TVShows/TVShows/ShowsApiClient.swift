@@ -60,12 +60,14 @@ class ShowsApiClient {
         }
     }
     
-    func getShows(onSuccess success: @escaping ([Show]) -> Void, onFailure failure: @escaping (Error) -> Void) {
+    func getShows(loginUser: LoginUser, onSuccess success: @escaping ([Show]) -> Void, onFailure failure: @escaping (Error) -> Void) {
         SVProgressHUD.show()
+        let headers = ["Authorization" : loginUser.token]
         Alamofire.request("\(baseURL)/api/shows",
                             method: .get,
                             parameters: nil,
-                            encoding: JSONEncoding.default)
+                            encoding: JSONEncoding.default,
+                            headers: headers)
                 .validate()
             .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
         { (dataResponse: DataResponse<[Show]>) in
