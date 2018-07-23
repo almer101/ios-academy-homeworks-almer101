@@ -152,9 +152,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="ASs-k7-Y6H"/>
                     <connections>
+                        <outlet property="contentView" destination="qjc-Zi-xZw" id="Whk-tG-pYn"/>
                         <outlet property="loginButton" destination="wGm-ir-Yfs" id="CZB-bu-muD"/>
                         <outlet property="passwordTextField" destination="VIp-cs-sd1" id="umh-ix-SHn"/>
                         <outlet property="rememberMeButton" destination="FmG-Ss-A8H" id="IhA-KX-OCn"/>
+                        <outlet property="scrollView" destination="e40-1e-7hA" id="RZr-xZ-wUf"/>
                         <outlet property="usernameTextField" destination="Bb1-4U-Y8e" id="wIR-xM-PoW"/>
                     </connections>
                 </viewController>

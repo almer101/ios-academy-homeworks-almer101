@@ -17,14 +17,52 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var rememberMeButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
     
     private var user: User? = nil
     private var currentUserData: UserData? = nil
+    private var activeField: UITextField? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addObservers()
+        addDelegateToTextFields()
         setupUI()
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillShow,
+                                               object: nil,
+                                               queue: nil) { [weak self] (notification) in
+                                                
+//                                                    if let keyboardSize = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey]) as? NSValue)?.cgRectValue {
+//                                                        let keyboardHeight = keyboardSize.height
+//                                                        UIView.animate(withDuration: 0.3, animations: {
+//                                                            self?.contentView.frame.size.height -= keyboardHeight
+//                                                        })
+//                                                        let distanceToBottom = (self?.scrollView.frame.size.height)! - (self?.activeField?.frame.origin.y)! - (self?.activeField?.frame.size.height)!
+//                                                        let collapseSpace = keyboardHeight - distanceToBottom
+////                                                        if collapseSpace < 0 { return }
+//                                                        UIView.animate(withDuration: 0.3, animations: {
+//                                                            // scroll to the position above keyboard 10 points
+//                                                            self?.scrollView.contentOffset = CGPoint(x: 0, y: -(keyboardHeight - (self?.passwordTextField.frame.origin.y)! - (self?.passwordTextField.frame.size.height)!))
+//                                                        })
+//                                                }
+                                                }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide,
+                                               object: nil,
+                                               queue: nil) { [weak self] (notification) in
+                                                    if let _ = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey]) as? NSValue)?.cgRectValue {
+                                                        
+                                                    }
+                                                }
+    }
+    
+    func addDelegateToTextFields() {
+        usernameTextField.delegate = self
+        passwordTextField.delegate = self
     }
     
     func setupUI() {
@@ -61,6 +99,7 @@ class LoginViewController: UIViewController {
             guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
                 return
             }
+            print("token is: \(loginUser.token)")
             viewController.configure(loginUser: loginUser)
             self.navigationController?.setViewControllers([viewController], animated: true)
             
@@ -99,6 +138,23 @@ extension LoginViewController {
         }) { (error) in
             print(error.localizedDescription)
         }
+    }
+    
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeField = textField
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        activeField = nil
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        resignFirstResponder()
+        return true
     }
     
 }

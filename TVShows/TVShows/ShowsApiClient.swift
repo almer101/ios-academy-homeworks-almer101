@@ -81,4 +81,53 @@ class ShowsApiClient {
         }
     }
     
+    func getShowDetails(showId: String, completion: @escaping (DataResponse<ShowDetails>) -> Void) {
+        Alamofire.request("\(baseURL)/api/shows/\(showId)",
+                            method: .get,
+                            parameters: nil,
+                            encoding: JSONEncoding.default)
+                .validate()
+                .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+                { (dataResponse: DataResponse<ShowDetails>) in
+                    completion(dataResponse)
+            }
+    }
+    
+    func getEpisodes(showId: String, completion: @escaping (DataResponse<[ShowEpisode]>) -> Void) {
+        Alamofire.request("\(baseURL)/api/shows/\(showId)/episodes",
+            method: .get,
+            parameters: nil,
+            encoding: JSONEncoding.default)
+            .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+            { (dataResponse: DataResponse<[ShowEpisode]>) in
+                completion(dataResponse)
+        }
+    }
+    
+    func getEpisodeDetails(episodeId: String, completion: @escaping (DataResponse<Episode>) -> Void) {
+        Alamofire.request("\(baseURL)/api/episodes/\(episodeId)",
+            method: .get,
+            parameters: nil,
+            encoding: JSONEncoding.default)
+            .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+            { (dataResponse: DataResponse<Episode>) in
+                completion(dataResponse)
+        }
+    }
+    
+    func addEpisode(toShowWithId showId: String, episode: Episode, completion: @escaping (DataResponse<Episode>) -> Void) {
+        let params = ["showId" : showId, "mediaId" : "", "title" : episode.title, "description" : episode.description, "episodeNumber" : episode.episodeNumber, "season" : episode.season]
+        Alamofire.request("\(baseURL)/episodes",
+            method: .post,
+            parameters: params,
+            encoding: JSONEncoding.default)
+            .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder()) { (dataResponse: DataResponse<Episode>) in
+                completion(dataResponse)
+        }
+    }
+    
+    
 }

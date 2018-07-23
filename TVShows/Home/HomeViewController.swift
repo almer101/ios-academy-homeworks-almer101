@@ -72,6 +72,16 @@ extension HomeViewController: UITableViewDataSource {
 extension HomeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewController = UIStoryboard(name: "ShowDetail", bundle: nil).instantiateViewController(withIdentifier: "ShowDetailViewController") as? ShowDetailViewController else {
+            return
+        }
+        let show = shows[indexPath.row]
+        guard let loginUser = loginUser else {
+            return
+        }
+        viewController.setup(showID: show.id, token: loginUser.token)
+        navigationController?.pushViewController(viewController, animated: true)
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
