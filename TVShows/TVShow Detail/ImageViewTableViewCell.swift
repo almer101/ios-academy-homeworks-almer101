@@ -22,12 +22,7 @@ class ImageViewTableViewCell: UITableViewCell {
     func setup(image : UIImage) {
         showImageView.image = image
         frame.size.height = rowHeight
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.white, UIColor.black]
-        gradientLayer.frame = gradientLayer.frame
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1)
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
-        gradientView.layer.insertSublayer(gradientLayer, at: 0)
+        gradientView.setGradientBackground(colorOne: UIColor.white.withAlphaComponent(0), colorTwo: UIColor.white.withAlphaComponent(1))
     }
     
 }

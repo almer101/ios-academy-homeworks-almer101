@@ -14,10 +14,11 @@ class ShowDetailViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     private var showID: String? = nil
-    private var token: String? = nil
+    private var loginUser: LoginUser? = nil
     private var showDetails: ShowDetails? = nil
     private var episodes: [Episode] = []
     private var episodesToLoad: Int = 0
+    private var imageHeightCoefficient: CGFloat = 0.38
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +30,9 @@ class ShowDetailViewController: UIViewController {
         getShowDetails()
     }
     
-    func setup(showID: String, token: String) {
+    func setup(showID: String, loginUser: LoginUser) {
         self.showID = showID
-        self.token = token
+        self.loginUser = loginUser
     }
     
     @IBAction func returnToThePreviousScreen(_ sender: UIButton) {
@@ -43,7 +44,9 @@ class ShowDetailViewController: UIViewController {
     @IBAction func addNewEpisode(_ sender: UIButton) {
         guard let viewController = UIStoryboard(name: "ShowDetail", bundle: nil).instantiateViewController(withIdentifier: "AddNewEpisodeViewController") as? AddNewEpisodeViewController else { return }
         guard let id = showID else { return }
-        viewController.setup(showId: id)
+        guard let user = loginUser else { return }
+        viewController.setup(showId: id, loginuser: user)
+        viewController.delegate = self
         let navigationController = UINavigationController(rootViewController: viewController)
         present(navigationController, animated: true, completion:  nil)
     }
@@ -53,7 +56,8 @@ extension ShowDetailViewController {
     
     func getShowDetails() {
         guard let id = showID else { return }
-        ShowsApiClient.shared.getShowDetails(showId: id) { [weak self] (dataResponse) in
+        guard let user = loginUser else { return }
+        ShowsApiClient.shared.getShowDetails(loginUser: user, showId: id) { [weak self] (dataResponse) in
             
             switch dataResponse.result {
             case .success(let details):
@@ -70,7 +74,8 @@ extension ShowDetailViewController {
     
     func getEpisodes() {
         guard let id = showID else { return }
-        ShowsApiClient.shared.getEpisodes(showId: id) { [weak self] (dataResponse) in
+        guard let user = loginUser else { return }
+        ShowsApiClient.shared.getEpisodes(loginUser: user, showId: id) { [weak self] (dataResponse) in
             
             switch dataResponse.result {
             case .success(let episodes):
@@ -90,7 +95,8 @@ extension ShowDetailViewController {
     }
     
     func getEpisodeDetails(episode: ShowEpisode) {
-        ShowsApiClient.shared.getEpisodeDetails(episodeId: episode.id) { [weak self] (dataResponse) in
+        guard let user = loginUser else { return }
+        ShowsApiClient.shared.getEpisodeDetails(loginUser: user, episodeId: episode.id) { [weak self] (dataResponse) in
             
             switch dataResponse.result {
             case .success(let episode):
@@ -154,12 +160,15 @@ extension ShowDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return view.frame.size.height / 3
+            return view.frame.size.height * imageHeightCoefficient
         } else {
             return UITableViewAutomaticDimension
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 
@@ -167,7 +176,9 @@ extension ShowDetailViewController: AddNewEpisodeViewControllerDelegate {
     
     func didAddNewEpisode(episode: Episode) {
         SVProgressHUD.show()
-        getEpisodes()
+        episodes.append(episode)
+        tableView.reloadData()
+        SVProgressHUD.dismiss()
     }
     
 }

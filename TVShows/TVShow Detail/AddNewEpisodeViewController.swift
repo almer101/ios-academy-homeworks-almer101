@@ -20,8 +20,11 @@ class AddNewEpisodeViewController: UIViewController {
     @IBOutlet weak var seasonNumberTextField: UITextField!
     @IBOutlet weak var episodeNumberTextField: UITextField!
     @IBOutlet weak var episodeDescriptionTextField: UITextField!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     private var showId: String? = nil
+    private var loginUser: LoginUser? = nil
+    var delegate: AddNewEpisodeViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +32,9 @@ class AddNewEpisodeViewController: UIViewController {
         setupUI()
     }
     
-    func setup(showId: String) {
+    func setup(showId: String, loginuser: LoginUser) {
         self.showId = showId
+        self.loginUser = loginuser
         
     }
 
@@ -53,16 +57,45 @@ class AddNewEpisodeViewController: UIViewController {
             return
         }
         guard let id = showId else { return }
-        ShowsApiClient.shared.addEpisode(toShowWithId: id, episode: ep) { [weak self] (dataResponse) in
+        guard let user = loginUser else { return }
+        
+        ShowsApiClient.shared.addEpisode(loginUser: user, toShowWithId: id, episode: ep) { [weak self] (dataResponse) in
             
             switch dataResponse.result {
             case .success(let episode):
-                print("Adding succeeded")
+                if let delegate = self?.delegate {
+                    delegate.didAddNewEpisode(episode: episode)
+                }
+                self?.dismiss(animated: true, completion: nil)
             case .failure(let error):
                 self?.alertUser(title: "Error", message: "An error occurred: \(error.localizedDescription)")
             }
         }
     }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: nil) { [weak self] (notification) in
+            self?.keyboardDidShow(notification: notification)
+        }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil) { [weak self] (notification) in
+            self?.keyboardWillHide(notification: notification)
+        }
+    }
+    
+    func keyboardDidShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
+        }
+        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: frame.height, right: 0)
+        scrollView.contentInset = contentInset
+    }
+    
+    func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+    }
+    
+   
     
     func extractModelFromFields() -> Episode? {
         guard let title = episodeTitleTextField.text,
@@ -76,7 +109,7 @@ class AddNewEpisodeViewController: UIViewController {
             !episodeNumber.isEmpty,
             let _ = Int(episodeNumber) else { return nil }
         guard let id = showId else { return nil }
-        let episode = Episode(showId: id, title: title, description: description, episodeNumber: episodeNumber, season: season, type: "episode", id: "")
+        let episode = Episode(showId: id, mediaId: "", title: title, description: description, episodeNumber: episodeNumber, season: season, type: "episodes", imageUrl: "", id: "")
         return episode
     }
     

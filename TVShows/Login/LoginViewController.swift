@@ -32,31 +32,24 @@ class LoginViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        addObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     func addObservers() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillShow,
-                                               object: nil,
-                                               queue: nil) { [weak self] (notification) in
-                                                
-//                                                    if let keyboardSize = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey]) as? NSValue)?.cgRectValue {
-//                                                        let keyboardHeight = keyboardSize.height
-//                                                        UIView.animate(withDuration: 0.3, animations: {
-//                                                            self?.contentView.frame.size.height -= keyboardHeight
-//                                                        })
-//                                                        let distanceToBottom = (self?.scrollView.frame.size.height)! - (self?.activeField?.frame.origin.y)! - (self?.activeField?.frame.size.height)!
-//                                                        let collapseSpace = keyboardHeight - distanceToBottom
-////                                                        if collapseSpace < 0 { return }
-//                                                        UIView.animate(withDuration: 0.3, animations: {
-//                                                            // scroll to the position above keyboard 10 points
-//                                                            self?.scrollView.contentOffset = CGPoint(x: 0, y: -(keyboardHeight - (self?.passwordTextField.frame.origin.y)! - (self?.passwordTextField.frame.size.height)!))
-//                                                        })
-//                                                }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: nil) { [weak self] (notification) in
+                                                    self?.keyboardDidShow(notification: notification)
                                                 }
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide,
-                                               object: nil,
-                                               queue: nil) { [weak self] (notification) in
-                                                    if let _ = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey]) as? NSValue)?.cgRectValue {
-                                                        
-                                                    }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil) { [weak self] (notification) in
+                                                    self?.keyboardWillHide(notification: notification)
                                                 }
     }
     
@@ -73,6 +66,19 @@ class LoginViewController: UIViewController {
         rememberMeButton.setTitleColor(UIColor.tvShowsPink, for: .normal)
     }
 
+    func keyboardDidShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: frame.height, right: 0)
+        scrollView.contentInset = contentInset
+    }
+    
+    func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+    }
+    
     func getLoginInputData() -> [String:String] {
         var parameters: [String:String] = [:]
         
@@ -153,7 +159,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignFirstResponder()
+        textField.resignFirstResponder()
         return true
     }
     

@@ -39,12 +39,12 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="169.5"/>
                                                         </imageView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBe-HO-8ME">
-                                                            <rect key="frame" x="0.0" y="127" width="375" height="42.5"/>
-                                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <rect key="frame" x="0.0" y="144" width="375" height="25.5"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </view>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="DBe-HO-8ME" firstAttribute="height" secondItem="UCd-q3-hbA" secondAttribute="height" multiplier="0.25" id="6tx-JW-wP1"/>
+                                                        <constraint firstItem="DBe-HO-8ME" firstAttribute="height" secondItem="UCd-q3-hbA" secondAttribute="height" multiplier="0.15" id="6tx-JW-wP1"/>
                                                         <constraint firstItem="UCd-q3-hbA" firstAttribute="leading" secondItem="278-V3-acu" secondAttribute="leading" id="9PK-d6-ujt"/>
                                                         <constraint firstItem="UCd-q3-hbA" firstAttribute="top" secondItem="278-V3-acu" secondAttribute="top" id="HWB-L9-Lr0"/>
                                                         <constraint firstItem="DBe-HO-8ME" firstAttribute="width" secondItem="UCd-q3-hbA" secondAttribute="width" id="Hfv-OQ-TSo"/>
@@ -122,16 +122,16 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S2 Ep6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAK-Ep-0Yl">
-                                                            <rect key="frame" x="15" y="14" width="70" height="21"/>
+                                                            <rect key="frame" x="15" y="14" width="80" height="21"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="70" id="3lS-7K-MGm"/>
+                                                                <constraint firstAttribute="width" constant="80" id="3lS-7K-MGm"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M2c-Cn-76K">
-                                                            <rect key="frame" x="95" y="14" width="248" height="21"/>
+                                                            <rect key="frame" x="105" y="14" width="238" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -350,6 +350,7 @@
                         <outlet property="episodeDescriptionTextField" destination="bdR-c3-zys" id="kyz-xN-aQw"/>
                         <outlet property="episodeNumberTextField" destination="c4N-dr-mYX" id="3db-EQ-Kuh"/>
                         <outlet property="episodeTitleTextField" destination="zTg-10-JjO" id="rIA-PM-ela"/>
+                        <outlet property="scrollView" destination="2lM-BP-4Pw" id="plK-8C-LsO"/>
                         <outlet property="seasonNumberTextField" destination="L6j-bp-OE7" id="k3p-jT-126"/>
                         <outlet property="uploadPhotoLabel" destination="PnN-W3-3V2" id="eAa-Uu-OBq"/>
                     </connections>

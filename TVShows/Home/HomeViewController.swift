@@ -33,7 +33,8 @@ class HomeViewController: UIViewController {
     }
     
     func loadShows() {
-        ShowsApiClient.shared.getShows(onSuccess: { [weak self] (shows) in
+        guard let user = loginUser else { return }
+        ShowsApiClient.shared.getShows(loginUser: user, onSuccess: { [weak self] (shows) in
             self?.shows = shows
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
@@ -79,7 +80,7 @@ extension HomeViewController: UITableViewDelegate {
         guard let loginUser = loginUser else {
             return
         }
-        viewController.setup(showID: show.id, token: loginUser.token)
+        viewController.setup(showID: show.id, loginUser: loginUser)
         navigationController?.pushViewController(viewController, animated: true)
         
         tableView.deselectRow(at: indexPath, animated: true)
