@@ -11,14 +11,15 @@ import Alamofire
 import SVProgressHUD
 import CodableAlamofire
 
-class LoginApiClient {
+class ShowsApiClient {
     
-    static var shared = LoginApiClient()
+    static var shared = ShowsApiClient()
+    private let baseURL = "https://api.infinum.academy"
     
     func loginUser(userData: UserData, onSuccess success: @escaping (LoginUser) -> Void, onFailure failure: @escaping (Error) -> Void) {
         let params = ["email": userData.email, "password": userData.password]
         SVProgressHUD.show()
-        Alamofire.request("https://api.infinum.academy/api/users/sessions",
+        Alamofire.request("\(baseURL)/api/users/sessions",
                           method: .post,
                           parameters: params,
                           encoding: JSONEncoding.default)
@@ -40,7 +41,7 @@ class LoginApiClient {
     func registerUser(userData: UserData, onSuccess success: @escaping (User) -> Void, onFailure failure: @escaping (Error) -> Void) {
         let params = ["email": userData.email, "password": userData.password]
         SVProgressHUD.show()
-        Alamofire.request("https://api.infinum.academy/api/users",
+        Alamofire.request("\(baseURL)/api/users",
                           method: .post,
                           parameters: params,
                           encoding: JSONEncoding.default)
@@ -56,6 +57,29 @@ class LoginApiClient {
                 case .failure(let error):
                     failure(error)
                 }
+        }
+    }
+    
+    func getShows(loginUser: LoginUser, onSuccess success: @escaping ([Show]) -> Void, onFailure failure: @escaping (Error) -> Void) {
+        SVProgressHUD.show()
+        let headers = ["Authorization" : loginUser.token]
+        Alamofire.request("\(baseURL)/api/shows",
+                            method: .get,
+                            parameters: nil,
+                            encoding: JSONEncoding.default,
+                            headers: headers)
+                .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+        { (dataResponse: DataResponse<[Show]>) in
+            
+            SVProgressHUD.dismiss()
+            
+            switch dataResponse.result {
+            case .success(let shows):
+                success(shows)
+            case .failure(let error):
+                failure(error)
+            }   
         }
     }
     

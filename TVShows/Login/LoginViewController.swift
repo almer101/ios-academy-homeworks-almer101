@@ -18,8 +18,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var rememberMeButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     
-    private let pinkColor = UIColor(red: 255.0/255.0, green: 117.0/255.0, blue: 140.0/255.0, alpha: 1)
-    private let lightGrayColor = UIColor(red: 224.0/255.0, green: 224.0/255.0, blue: 224.0/255.0, alpha: 1)
     private var user: User? = nil
     private var currentUserData: UserData? = nil
     
@@ -30,11 +28,11 @@ class LoginViewController: UIViewController {
     }
     
     func setupUI() {
-        loginButton.backgroundColor = pinkColor
+        loginButton.backgroundColor = UIColor.tvShowsPink
         loginButton.setTitleColor(UIColor.white, for: .normal)
         loginButton.layer.cornerRadius = 8
         
-        rememberMeButton.setTitleColor(pinkColor, for: .normal)
+        rememberMeButton.setTitleColor(UIColor.tvShowsPink, for: .normal)
     }
 
     func getLoginInputData() -> [String:String] {
@@ -50,23 +48,24 @@ class LoginViewController: UIViewController {
         return parameters
     }
     
-    func alertUser() {
-        let alert = UIAlertController(title: "Wrong entry", message: "Please check all the fields", preferredStyle: .alert)
+    func alertUser(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
     
-    
     func loginUser(userData: UserData) {
-        LoginApiClient.shared.loginUser(userData: userData, onSuccess: { (loginData) in
+        ShowsApiClient.shared.loginUser(userData: userData, onSuccess: { (loginUser) in
             self.currentUserData = userData
             guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
                 return
             }
-            self.navigationController?.pushViewController(viewController, animated: true)
+            viewController.configure(loginUser: loginUser)
+            self.navigationController?.setViewControllers([viewController], animated: true)
             
         }) { (error) in
+            self.alertUser(title: "Invalid login", message: "Invalid username or password")
             print(error.localizedDescription)
         }
     }
@@ -78,7 +77,7 @@ extension LoginViewController {
     @IBAction func loginAction(_ sender: UIButton) {
         let params = getLoginInputData()
         if params.count == 0 {
-            alertUser()
+            alertUser(title: "Wrong entry", message: "Please check all the fields")
             return
         }
         let userData = UserData(email: params["email"]!, password: params["password"]!)
@@ -88,12 +87,12 @@ extension LoginViewController {
     @IBAction func registerAction(_ sender: UIButton) {
         let params = getLoginInputData()
         if params.count == 0 {
-            alertUser()
+            alertUser(title: "Wrong entry", message: "Please check all the fields")
             return
         }
         let userData = UserData(email: params["email"]!, password: params["password"]!)
         
-        LoginApiClient.shared.registerUser(userData: userData, onSuccess: { (user) in
+        ShowsApiClient.shared.registerUser(userData: userData, onSuccess: { (user) in
             self.user = user
             self.loginUser(userData: userData)
             
@@ -101,6 +100,5 @@ extension LoginViewController {
             print(error.localizedDescription)
         }
     }
-    
     
 }
