@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import SVProgressHUD
 import CodableAlamofire
+import Kingfisher 
 
 class ShowsApiClient {
     
@@ -139,6 +140,11 @@ class ShowsApiClient {
             .responseDecodableObject(keyPath: "data") { (dataResponse: DataResponse<Episode>) in
                 completion(dataResponse)
         }
+    }
+    
+    func setPosterImage(imageUrl: String, onImage image: UIImage) {
+        let url = URL(string: "http://api.infinum.academy" + imageUrl)
+//        imageUrl.kf
     }
     
     

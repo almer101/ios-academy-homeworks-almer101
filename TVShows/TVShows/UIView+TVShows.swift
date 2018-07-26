@@ -24,5 +24,29 @@ extension UIView {
         
     }
     
+    func shake() {
+        UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseInOut], animations: {
+            self.transform = CGAffineTransform(translationX: -10, y: 0)
+            
+        }) { (finished) in
+            if finished {
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 40, options: [.curveEaseInOut], animations: {
+                    self.transform = CGAffineTransform.identity
+                })
+            }
+        }
+    }
+    
+    func show(withDuration delay: TimeInterval) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.alpha = 1
+        }) { (finished) in
+            if !finished { return }
+            UIView.animate(withDuration: 0.1, delay: delay, options: [.curveEaseInOut], animations: {
+                self.alpha = 0
+            })
+        }
+    }
+    
 }
 

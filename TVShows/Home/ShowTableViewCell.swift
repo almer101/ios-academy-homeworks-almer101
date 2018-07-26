@@ -11,6 +11,7 @@ import UIKit
 class ShowTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var showImageView: UIImageView!
     
     private var show: Show? = nil
     
@@ -24,8 +25,13 @@ class ShowTableViewCell: UITableViewCell {
         titleLabel.text = show.title
     }
     
+    func configure(image: UIImage) {
+        showImageView.image = image
+    }
+    
     override func prepareForReuse() {
         titleLabel.text = nil
+        showImageView.image = UIImage(named: "poseter-placeholder")
     }
 
 }

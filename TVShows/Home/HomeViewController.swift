@@ -56,6 +56,7 @@ extension HomeViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         cell.configure(show: shows[indexPath.row])
+//        cell.configure(show: <#T##Show#>)
         return cell
     }
     
