@@ -30,6 +30,7 @@ class AddNewEpisodeViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        addObservers()
     }
     
     func setup(showId: String, loginuser: LoginUser) {
@@ -37,10 +38,36 @@ class AddNewEpisodeViewController: UIViewController {
         self.loginUser = loginuser
         
     }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: nil) { [weak self] (notification) in
+            self?.keyboardDidShow(notification: notification)
+        }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil) { [weak self] (notification) in
+            self?.keyboardWillHide(notification: notification)
+        }
+    }
+    
+    func keyboardDidShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
+        }
+        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: frame.height, right: 0)
+        scrollView.contentInset = contentInset
+    }
+    
+    func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+    }
 
     func setupUI() {
         navigationItem.title = "Add episode"
         uploadPhotoLabel.textColor = UIColor.tvShowsPink
+        episodeTitleTextField.delegate = self
+        seasonNumberTextField.delegate = self
+        episodeNumberTextField.delegate = self
+        episodeDescriptionTextField.delegate = self
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelAddingNewEpisode))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(didSelectAddEpisode))
@@ -73,30 +100,6 @@ class AddNewEpisodeViewController: UIViewController {
         }
     }
     
-    func addObservers() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: nil) { [weak self] (notification) in
-            self?.keyboardDidShow(notification: notification)
-        }
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil) { [weak self] (notification) in
-            self?.keyboardWillHide(notification: notification)
-        }
-    }
-    
-    func keyboardDidShow(notification: Notification) {
-        guard let userInfo = notification.userInfo,
-            let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-                return
-        }
-        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: frame.height, right: 0)
-        scrollView.contentInset = contentInset
-    }
-    
-    func keyboardWillHide(notification: Notification) {
-        scrollView.contentInset = UIEdgeInsets.zero
-    }
-    
-   
-    
     func extractModelFromFields() -> Episode? {
         guard let title = episodeTitleTextField.text,
             !title.isEmpty else { return nil }
@@ -118,6 +121,15 @@ class AddNewEpisodeViewController: UIViewController {
         let closeAction = UIAlertAction(title: "Close", style: .cancel, handler: nil)
         alertViewController.addAction(closeAction)
         present(alertViewController, animated: true)
+    }
+    
+}
+
+extension AddNewEpisodeViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }
