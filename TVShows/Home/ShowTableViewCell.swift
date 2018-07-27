@@ -28,7 +28,7 @@ class ShowTableViewCell: UITableViewCell {
     }
     
     func setPlaceholderImage() {
-        showImageView.image = UIImage(named: "poseter-placeholder")
+        showImageView.image = UIImage(named: "poster-placeholder")
     }
     
     override func prepareForReuse() {

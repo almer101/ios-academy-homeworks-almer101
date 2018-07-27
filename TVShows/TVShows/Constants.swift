@@ -12,5 +12,6 @@ enum Defaults: String {
     
     case rememberMeEmail = "rememberMeEmail"
     case rememberMePassword = "rememberMePassword"
+    case preferredLayoutType = "preferredLayoutType"
     
 }
