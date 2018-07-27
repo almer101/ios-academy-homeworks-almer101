@@ -12,13 +12,15 @@ import UIKit
 class HomeViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    private var shows: [Show] = []
     
+    private var shows: [Show] = []
     private var loginUser: LoginUser? = nil
+    private let rowHeight: CGFloat = 120
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupUI()
         setupTableView()
         loadShows()
     }
@@ -27,9 +29,34 @@ class HomeViewController: UIViewController {
         self.loginUser = loginUser
     }
     
+    func setupUI() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic-logout"), style: .plain, target: self, action: #selector(logoutUser))
+    }
+    
+    @objc func logoutUser() {
+        alertUser(title: "Logout", message: "Are you sure you want to logout?")
+    }
+    
+    func alertUser(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { [weak self] (alert: UIAlertAction!) in self?.performLogout()})
+        alert.addAction(cancelAction)
+        alert.addAction(yesAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func performLogout() {
+        UserDefaults.standard.removeObject(forKey: Defaults.rememberMeEmail.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.rememberMePassword.rawValue)
+        guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController else { return }
+        navigationController?.setViewControllers([viewController], animated: true)
+    }
+    
     func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.rowHeight = rowHeight
     }
     
     func loadShows() {
@@ -55,8 +82,10 @@ extension HomeViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ShowTableViewCell") as? ShowTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(show: shows[indexPath.row])
-//        cell.configure(show: <#T##Show#>)
+        let show = shows[indexPath.row]
+        cell.configure(show: show)
+        cell.setPlaceholderImage()
+        ShowsApiClient.shared.setPosterImage(forShow: show, onImageViewInCell: cell)
         return cell
     }
     
@@ -81,9 +110,10 @@ extension HomeViewController: UITableViewDelegate {
         guard let loginUser = loginUser else {
             return
         }
-        viewController.setup(showID: show.id, loginUser: loginUser)
+        viewController.setup(show: show, loginUser: loginUser)
         navigationController?.pushViewController(viewController, animated: true)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
 }

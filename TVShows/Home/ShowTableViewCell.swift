@@ -14,6 +14,7 @@ class ShowTableViewCell: UITableViewCell {
     @IBOutlet weak var showImageView: UIImageView!
     
     private var show: Show? = nil
+    var showId: String?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,16 +23,17 @@ class ShowTableViewCell: UITableViewCell {
     
     func configure(show: Show) {
         self.show = show
+        self.showId = show.id
         titleLabel.text = show.title
     }
     
-    func configure(image: UIImage) {
-        showImageView.image = image
+    func setPlaceholderImage() {
+        showImageView.image = UIImage(named: "poseter-placeholder")
     }
     
     override func prepareForReuse() {
         titleLabel.text = nil
-        showImageView.image = UIImage(named: "poseter-placeholder")
+        setPlaceholderImage()
     }
 
 }

@@ -14,4 +14,8 @@ extension UIColor {
         return UIColor(red: 255.0/255.0, green: 117.0/255.0, blue: 140.0/255.0, alpha: 1)
     }
     
+    class var tvShowsBlack: UIColor {
+        return UIColor(red: 49.0/255.0, green: 49.0/255.0, blue: 49.0/255.0, alpha: 1)
+    }
+    
 }

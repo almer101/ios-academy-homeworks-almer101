@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import SVProgressHUD
 import CodableAlamofire
-import Kingfisher 
+import Kingfisher
 
 class ShowsApiClient {
     
@@ -142,9 +142,16 @@ class ShowsApiClient {
         }
     }
     
-    func setPosterImage(imageUrl: String, onImage image: UIImage) {
-        let url = URL(string: "http://api.infinum.academy" + imageUrl)
-//        imageUrl.kf
+    func setPosterImage(forShow show: Show, onImageViewInCell cell: ShowTableViewCell) {
+        if show.id == cell.showId {
+            setPosterImage(forImageUrl: show.imageUrl, onImageView: cell.showImageView)
+        }        
+    }
+    
+    func setPosterImage(forImageUrl url: String, onImageView imageView: ImageView) {
+        let url = URL(string: "http://api.infinum.academy" + url)
+        imageView.kf.setImage(with: url)
+        
     }
     
     

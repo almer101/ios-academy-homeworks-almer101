@@ -25,10 +25,13 @@ class LoginViewController: UIViewController {
     private var currentUserData: UserData? = nil
     private var activeField: UITextField? = nil
     private var rememberMe = false
+    private let invalidDataMessage = "Invalid email or password, please check all the fields"
+    private let wrongEntryMessage = "Wrong format of email or password, please check all the fields"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkForRememberedUser()
         addObservers()
         addDelegateToTextFields()
         setupUI()
@@ -44,6 +47,16 @@ class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    func checkForRememberedUser() {
+        if let email = UserDefaults.standard.value(forKey: Defaults.rememberMeEmail.rawValue) as? String,
+            let password = UserDefaults.standard.value(forKey: Defaults.rememberMePassword.rawValue) as? String {
+            rememberMe = true
+            usernameTextField.text = email
+            passwordTextField.text = password
+            loginUser(userData: UserData(email: email, password: password))
+        }
     }
     
     func addObservers() {
@@ -109,10 +122,17 @@ class LoginViewController: UIViewController {
             guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
                 return
             }
+            guard let remember = self?.rememberMe else { return }
+            if remember {
+                UserDefaults.standard.set(userData.email, forKey: Defaults.rememberMeEmail.rawValue)
+                UserDefaults.standard.set(userData.password, forKey: Defaults.rememberMePassword.rawValue)
+            }
             viewController.configure(loginUser: loginUser)
             self?.navigationController?.setViewControllers([viewController], animated: true)
             
         }) { [weak self] (error) in
+            self?.infoLabel.text = self?.invalidDataMessage
+            self?.infoLabel.show(withDuration: 3)
             self?.shakeButtonAndFields()
             print(error.localizedDescription)
         }
@@ -132,6 +152,7 @@ extension LoginViewController {
     @IBAction func loginAction(_ sender: UIButton) {
         let params = getLoginInputData()
         if params.count == 0 {
+            infoLabel.text = invalidDataMessage
             infoLabel.show(withDuration: 3)
             shakeButtonAndFields()
             return
@@ -143,17 +164,21 @@ extension LoginViewController {
     @IBAction func registerAction(_ sender: UIButton) {
         let params = getLoginInputData()
         if params.count == 0 {
+            infoLabel.text = wrongEntryMessage
             infoLabel.show(withDuration: 3)
             shakeButtonAndFields()
             return
         }
         let userData = UserData(email: params["email"]!, password: params["password"]!)
         
-        ShowsApiClient.shared.registerUser(userData: userData, onSuccess: { (user) in
-            self.user = user
-            self.loginUser(userData: userData)
+        ShowsApiClient.shared.registerUser(userData: userData, onSuccess: { [weak self] (user) in
+            self?.user = user
+            self?.loginUser(userData: userData)
             
-        }) { (error) in
+        }) { [weak self] (error) in
+            self?.infoLabel.text = self?.wrongEntryMessage
+            self?.infoLabel.show(withDuration: 3)
+            self?.shakeButtonAndFields()
             print(error.localizedDescription)
         }
     }
@@ -161,9 +186,7 @@ extension LoginViewController {
     @IBAction func rememberMeToggled(_ sender: UIButton) {
         rememberMe = !rememberMe
         sender.setImage(
-            UIImage(named: rememberMe ? "ic-checkbox-filled" : "ic-checkbox-empty"),
-            for: .normal
-        )
+            UIImage(named: rememberMe ? "ic-checkbox-filled" : "ic-checkbox-empty"), for: .normal)
     }
 
 }

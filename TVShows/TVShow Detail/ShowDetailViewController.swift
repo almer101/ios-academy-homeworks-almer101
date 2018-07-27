@@ -13,7 +13,7 @@ class ShowDetailViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var showID: String? = nil
+    private var show: Show? = nil
     private var loginUser: LoginUser? = nil
     private var showDetails: ShowDetails? = nil
     private var episodes: [Episode] = []
@@ -30,8 +30,8 @@ class ShowDetailViewController: UIViewController {
         getShowDetails()
     }
     
-    func setup(showID: String, loginUser: LoginUser) {
-        self.showID = showID
+    func setup(show: Show, loginUser: LoginUser) {
+        self.show = show
         self.loginUser = loginUser
     }
     
@@ -43,9 +43,9 @@ class ShowDetailViewController: UIViewController {
     
     @IBAction func addNewEpisode(_ sender: UIButton) {
         guard let viewController = UIStoryboard(name: "ShowDetail", bundle: nil).instantiateViewController(withIdentifier: "AddNewEpisodeViewController") as? AddNewEpisodeViewController else { return }
-        guard let id = showID else { return }
+        guard let show = show else { return }
         guard let user = loginUser else { return }
-        viewController.setup(showId: id, loginuser: user)
+        viewController.setup(showId: show.id, loginuser: user)
         viewController.delegate = self
         let navigationController = UINavigationController(rootViewController: viewController)
         present(navigationController, animated: true, completion:  nil)
@@ -55,9 +55,9 @@ class ShowDetailViewController: UIViewController {
 extension ShowDetailViewController {
     
     func getShowDetails() {
-        guard let id = showID else { return }
+        guard let show = show else { return }
         guard let user = loginUser else { return }
-        ShowsApiClient.shared.getShowDetails(loginUser: user, showId: id) { [weak self] (dataResponse) in
+        ShowsApiClient.shared.getShowDetails(loginUser: user, showId: show.id) { [weak self] (dataResponse) in
             
             switch dataResponse.result {
             case .success(let details):
@@ -73,9 +73,9 @@ extension ShowDetailViewController {
     }
     
     func getEpisodes() {
-        guard let id = showID else { return }
+        guard let show = show else { return }
         guard let user = loginUser else { return }
-        ShowsApiClient.shared.getEpisodes(loginUser: user, showId: id) { [weak self] (dataResponse) in
+        ShowsApiClient.shared.getEpisodes(loginUser: user, showId: show.id) { [weak self] (dataResponse) in
             
             switch dataResponse.result {
             case .success(let episodes):
@@ -130,9 +130,11 @@ extension ShowDetailViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageViewTableViewCell") as? ImageViewTableViewCell else {
                 return UITableViewCell()
             }
-            //api call for show image
             if let image = UIImage(named: "placeholder") {
                 cell.setup(image: image)
+            }
+            if let show = show {
+                ShowsApiClient.shared.setPosterImage(forImageUrl: show.imageUrl, onImageView: cell.showImageView)
             }
             return cell
             
