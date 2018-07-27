@@ -11,10 +11,6 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
-    //TODO : replace tableView with CollectionView  +
-    //          delegate and data source
-    //          LayoutType variable +
-    //
     @IBOutlet weak var collectionView: UICollectionView!
     
     private var shows: [Show] = []
@@ -116,20 +112,6 @@ extension HomeViewController: UICollectionViewDataSource {
 }
 
 extension HomeViewController: UICollectionViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let viewController = UIStoryboard(name: "ShowDetail", bundle: nil).instantiateViewController(withIdentifier: "ShowDetailViewController") as? ShowDetailViewController else {
-            return
-        }
-        let show = shows[indexPath.row]
-        guard let loginUser = loginUser else {
-            return
-        }
-        viewController.setup(show: show, loginUser: loginUser)
-        navigationController?.pushViewController(viewController, animated: true)
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let viewController = UIStoryboard(name: "ShowDetail", bundle: nil).instantiateViewController(withIdentifier: "ShowDetailViewController") as? ShowDetailViewController else {

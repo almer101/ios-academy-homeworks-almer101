@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2C29CAD820FF43FE001776E2 /* UIColor+TVShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C29CAD720FF43FE001776E2 /* UIColor+TVShows.swift */; };
-		2C49244620FE1112008DEBA7 /* ShowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C49244520FE1112008DEBA7 /* ShowTableViewCell.swift */; };
 		2C49244920FE12C2008DEBA7 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C49244820FE12C2008DEBA7 /* Show.swift */; };
 		2C62BF1620FCBEE400B87218 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C62BF1520FCBEE400B87218 /* HomeViewController.swift */; };
 		2C7252D320FDD81200C3F5D0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7252D220FDD81200C3F5D0 /* User.swift */; };
@@ -39,7 +38,6 @@
 
 /* Begin PBXFileReference section */
 		2C29CAD720FF43FE001776E2 /* UIColor+TVShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+TVShows.swift"; sourceTree = "<group>"; };
-		2C49244520FE1112008DEBA7 /* ShowTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowTableViewCell.swift; sourceTree = "<group>"; };
 		2C49244820FE12C2008DEBA7 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		2C62BF1520FCBEE400B87218 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		2C7252D220FDD81200C3F5D0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -88,7 +86,6 @@
 			isa = PBXGroup;
 			children = (
 				2C62BF1520FCBEE400B87218 /* HomeViewController.swift */,
-				2C49244520FE1112008DEBA7 /* ShowTableViewCell.swift */,
 				2C49244820FE12C2008DEBA7 /* Show.swift */,
 				2C7ABD60210B0242007D3812 /* ShowListCollectionViewCell.swift */,
 				2C7ABD62210B024B007D3812 /* ShowGridCollectionViewCell.swift */,
@@ -315,7 +312,6 @@
 				2CF0FF4521047EB600A3344A /* Episode.swift in Sources */,
 				2C49244920FE12C2008DEBA7 /* Show.swift in Sources */,
 				2CBE6F32210A068600ACD650 /* Constants.swift in Sources */,
-				2C49244620FE1112008DEBA7 /* ShowTableViewCell.swift in Sources */,
 				2C62BF1620FCBEE400B87218 /* HomeViewController.swift in Sources */,
 				2C7ABD63210B024B007D3812 /* ShowGridCollectionViewCell.swift in Sources */,
 				2CAC7DBD21070DA2003EF8B3 /* UIView+TVShows.swift in Sources */,

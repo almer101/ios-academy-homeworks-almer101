@@ -142,13 +142,6 @@ class ShowsApiClient {
         }
     }
     
-    //TODO : remove this method 
-    func setPosterImage(forShow show: Show, onImageViewInCell cell: ShowTableViewCell) {
-        if show.id == cell.showId {
-            setPosterImage(forImageUrl: show.imageUrl, onImageView: cell.showImageView)
-        }        
-    }
-    
     func setPosterImage(forShow show: Show, onImageViewInCell cell: ShowListCollectionViewCell) {
         if show.id == cell.showId {
             setPosterImage(forImageUrl: show.imageUrl, onImageView: cell.showImageView)
