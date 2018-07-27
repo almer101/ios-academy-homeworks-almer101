@@ -83,4 +83,63 @@ class ShowsApiClient {
         }
     }
     
+    func getShowDetails(loginUser: LoginUser, showId: String, completion: @escaping (DataResponse<ShowDetails>) -> Void) {
+        let headers = ["Authorization" : loginUser.token]
+        Alamofire.request("\(baseURL)/api/shows/\(showId)",
+                            method: .get,
+                            parameters: nil,
+                            encoding: JSONEncoding.default,
+                            headers: headers)
+                .validate()
+                .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+                { (dataResponse: DataResponse<ShowDetails>) in
+                    completion(dataResponse)
+            }
+    }
+    
+    func getEpisodes(loginUser: LoginUser, showId: String, completion: @escaping (DataResponse<[ShowEpisode]>) -> Void) {
+        let headers = ["Authorization" : loginUser.token]
+        Alamofire.request("\(baseURL)/api/shows/\(showId)/episodes",
+            method: .get,
+            parameters: nil,
+            encoding: JSONEncoding.default,
+            headers: headers)
+            .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+            { (dataResponse: DataResponse<[ShowEpisode]>) in
+                completion(dataResponse)
+        }
+    }
+    
+    func getEpisodeDetails(loginUser: LoginUser, episodeId: String, completion: @escaping (DataResponse<Episode>) -> Void) {
+        let headers = ["Authorization" : loginUser.token]
+        Alamofire.request("\(baseURL)/api/episodes/\(episodeId)",
+            method: .get,
+            parameters: nil,
+            encoding: JSONEncoding.default,
+            headers: headers)
+            .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+            { (dataResponse: DataResponse<Episode>) in
+                completion(dataResponse)
+        }
+    }
+    
+    func addEpisode(loginUser: LoginUser, toShowWithId showId: String, episode: Episode, completion: @escaping (DataResponse<Episode>) -> Void) {
+        let params = ["showId" : showId, "mediaId" : "", "title" : episode.title, "description" : episode.description, "episodeNumber" : episode.episodeNumber, "season" : episode.season]
+        let headers = ["Authorization": loginUser.token]
+        
+        Alamofire
+            .request("\(baseURL)/api/episodes",
+                     method: .post,
+                     parameters: params,
+                     encoding: JSONEncoding.default,
+                     headers: headers)
+            .validate()
+            .responseDecodableObject(keyPath: "data") { (dataResponse: DataResponse<Episode>) in
+                completion(dataResponse)
+        }
+    }
+    
+    
 }

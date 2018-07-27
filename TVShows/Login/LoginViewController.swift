@@ -17,14 +17,45 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var rememberMeButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
     
     private var user: User? = nil
     private var currentUserData: UserData? = nil
+    private var activeField: UITextField? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addObservers()
+        addDelegateToTextFields()
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        addObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: nil) { [weak self] (notification) in
+                                                    self?.keyboardDidShow(notification: notification)
+                                                }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil) { [weak self] (notification) in
+                                                    self?.keyboardWillHide(notification: notification)
+                                                }
+    }
+    
+    func addDelegateToTextFields() {
+        usernameTextField.delegate = self
+        passwordTextField.delegate = self
     }
     
     func setupUI() {
@@ -35,6 +66,19 @@ class LoginViewController: UIViewController {
         rememberMeButton.setTitleColor(UIColor.tvShowsPink, for: .normal)
     }
 
+    func keyboardDidShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: frame.height, right: 0)
+        scrollView.contentInset = contentInset
+    }
+    
+    func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+    }
+    
     func getLoginInputData() -> [String:String] {
         var parameters: [String:String] = [:]
         
@@ -61,6 +105,7 @@ class LoginViewController: UIViewController {
             guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
                 return
             }
+            print("token is: \(loginUser.token)")
             viewController.configure(loginUser: loginUser)
             self.navigationController?.setViewControllers([viewController], animated: true)
             
@@ -99,6 +144,23 @@ extension LoginViewController {
         }) { (error) in
             print(error.localizedDescription)
         }
+    }
+    
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeField = textField
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        activeField = nil
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }
