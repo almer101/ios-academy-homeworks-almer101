@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SVProgressHUD
 
 protocol AddNewEpisodeViewControllerDelegate {
     
@@ -20,12 +22,14 @@ class AddNewEpisodeViewController: UIViewController {
     @IBOutlet weak var seasonNumberTextField: UITextField!
     @IBOutlet weak var episodeNumberTextField: UITextField!
     @IBOutlet weak var episodeDescriptionTextField: UITextField!
+    @IBOutlet weak var uploadImageView: UIImageView!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
     private var showId: String? = nil
     private var loginUser: LoginUser? = nil
     var delegate: AddNewEpisodeViewControllerDelegate?
+    private var media: Media? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +78,22 @@ class AddNewEpisodeViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(didSelectAddEpisode))
         navigationController?.navigationBar.tintColor = UIColor.tvShowsPink
         
+        uploadImageView.isUserInteractionEnabled = true
+        uploadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(deleteSelectedImage)))
+        
         infoLabel.alpha = 0
+    }
+    
+    @objc func deleteSelectedImage() {
+        print("Tu sam")
+        let actionSheet = UIAlertController(title: "Delete selected photo?", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (action: UIAlertAction) in
+            self?.uploadImageView.image = nil
+            self?.media = nil
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(actionSheet, animated: true)
     }
     
     @objc func didCancelAddingNewEpisode() {
@@ -83,7 +102,6 @@ class AddNewEpisodeViewController: UIViewController {
     
     @objc func didSelectAddEpisode() {
         guard let ep = extractModelFromFields() else {
-//            alertUser(title: "Invalid input", message: "Please check all the fields")
             shakeTextFields()
             infoLabel.show(withDuration: 3)
             return
@@ -91,6 +109,7 @@ class AddNewEpisodeViewController: UIViewController {
         guard let id = showId else { return }
         guard let user = loginUser else { return }
         
+        print(ep)
         ShowsApiClient.shared.addEpisode(loginUser: user, toShowWithId: id, episode: ep) { [weak self] (dataResponse) in
             
             switch dataResponse.result {
@@ -117,7 +136,7 @@ class AddNewEpisodeViewController: UIViewController {
             !episodeNumber.isEmpty,
             let _ = Int(episodeNumber) else { return nil }
         guard let id = showId else { return nil }
-        let episode = Episode(showId: id, mediaId: "", title: title, description: description, episodeNumber: episodeNumber, season: season, type: "episodes", imageUrl: "", id: "")
+        let episode = Episode(showId: id, mediaId: media?.id ?? "", title: title, description: description, episodeNumber: episodeNumber, season: season, type: "episodes", imageUrl: media?.path ?? "", id: "")
         return episode
     }
     
@@ -135,6 +154,41 @@ class AddNewEpisodeViewController: UIViewController {
         episodeDescriptionTextField.shake()
     }
     
+    @IBAction func uploadPhotoTapped(_ sender: UIButton) {
+        let pickerController = UIImagePickerController()
+        pickerController.delegate = self
+        
+        let actionSheet = UIAlertController(title: "Choose image Source", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Photo library", style: .default, handler: { [weak self] (action: UIAlertAction) in
+            pickerController.sourceType = .photoLibrary
+            self?.present(pickerController, animated: true)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { [weak self] (action: UIAlertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                pickerController.sourceType = .camera
+                self?.present(pickerController, animated: true)
+            } else {
+                print("Camera not available")
+            }
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(actionSheet, animated: true)
+
+    }
+    
+    
+    func showActionSheet() {
+        let actionSheet = UIAlertController(title: "Choose image Source", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Photo library", style: .default, handler: { (action: UIAlertAction) in
+            
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
+            
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(actionSheet, animated: true)
+    }
+    
 }
 
 extension AddNewEpisodeViewController: UITextFieldDelegate {
@@ -143,5 +197,46 @@ extension AddNewEpisodeViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
+}
+
+extension AddNewEpisodeViewController: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            uploadImageView.image = pickedImage
+            SVProgressHUD.show()
+            guard let user = loginUser, let showId = showId else { return }
+            ShowsApiClient.shared.uploadImageOnAPI(token: user.token, image: pickedImage, showId: showId) { [weak self] (result) in
+                switch result {
+                case .success(let uploadRequest, _, _):
+                    self?.processUploadRequest(uploadRequest)
+                case .failure(let error):
+                    print("FAILURE: \(error.localizedDescription)")
+                }
+            }
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    private func processUploadRequest(_ uploadRequest: UploadRequest) {
+        uploadRequest.responseDecodableObject(keyPath: "data") { [weak self] (response: DataResponse<Media>) in
+            switch response.result {
+            case .success(let media):
+                print("Success: \(media)")
+                self?.media = media
+                SVProgressHUD.dismiss()
+            case .failure(let error):
+                print("Failure: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
+extension AddNewEpisodeViewController: UINavigationControllerDelegate {
     
 }

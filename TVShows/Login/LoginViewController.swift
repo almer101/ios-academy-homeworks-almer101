@@ -128,6 +128,7 @@ class LoginViewController: UIViewController {
                 UserDefaults.standard.set(userData.password, forKey: Defaults.rememberMePassword.rawValue)
             }
             viewController.configure(loginUser: loginUser)
+            print("The token is: \(loginUser.token)")
             self?.navigationController?.setViewControllers([viewController], animated: true)
             
         }) { [weak self] (error) in
