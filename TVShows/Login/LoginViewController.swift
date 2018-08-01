@@ -19,14 +19,19 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var infoLabel: UILabel!
     
     private var user: User? = nil
     private var currentUserData: UserData? = nil
     private var activeField: UITextField? = nil
+    private var rememberMe = false
+    private let invalidDataMessage = "Invalid email or password, please check all the fields"
+    private let wrongEntryMessage = "Wrong format of email or password, please check all the fields"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkForRememberedUser()
         addObservers()
         addDelegateToTextFields()
         setupUI()
@@ -42,6 +47,16 @@ class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    func checkForRememberedUser() {
+        if let email = UserDefaults.standard.value(forKey: Defaults.rememberMeEmail.rawValue) as? String,
+            let password = UserDefaults.standard.value(forKey: Defaults.rememberMePassword.rawValue) as? String {
+            rememberMe = true
+            usernameTextField.text = email
+            passwordTextField.text = password
+            loginUser(userData: UserData(email: email, password: password))
+        }
     }
     
     func addObservers() {
@@ -64,6 +79,8 @@ class LoginViewController: UIViewController {
         loginButton.layer.cornerRadius = 8
         
         rememberMeButton.setTitleColor(UIColor.tvShowsPink, for: .normal)
+        infoLabel.isHidden = false
+        infoLabel.alpha = 0
     }
 
     func keyboardDidShow(notification: Notification) {
@@ -100,19 +117,32 @@ class LoginViewController: UIViewController {
     }
     
     func loginUser(userData: UserData) {
-        ShowsApiClient.shared.loginUser(userData: userData, onSuccess: { (loginUser) in
-            self.currentUserData = userData
+        ShowsApiClient.shared.loginUser(userData: userData, onSuccess: { [weak self] (loginUser) in
+            self?.currentUserData = userData
             guard let viewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
                 return
             }
-            print("token is: \(loginUser.token)")
+            guard let remember = self?.rememberMe else { return }
+            if remember {
+                UserDefaults.standard.set(userData.email, forKey: Defaults.rememberMeEmail.rawValue)
+                UserDefaults.standard.set(userData.password, forKey: Defaults.rememberMePassword.rawValue)
+            }
             viewController.configure(loginUser: loginUser)
-            self.navigationController?.setViewControllers([viewController], animated: true)
+            self?.navigationController?.setViewControllers([viewController], animated: true)
             
-        }) { (error) in
-            self.alertUser(title: "Invalid login", message: "Invalid username or password")
+        }) { [weak self] (error) in
+            self?.infoLabel.text = self?.invalidDataMessage
+            self?.infoLabel.show(withDuration: 3)
+            self?.shakeButtonAndFields()
             print(error.localizedDescription)
         }
+    }
+    
+    func shakeButtonAndFields() {
+        loginButton.shake()
+        usernameTextField.shake()
+        passwordTextField.shake()
+        
     }
     
 }
@@ -122,7 +152,9 @@ extension LoginViewController {
     @IBAction func loginAction(_ sender: UIButton) {
         let params = getLoginInputData()
         if params.count == 0 {
-            alertUser(title: "Wrong entry", message: "Please check all the fields")
+            infoLabel.text = invalidDataMessage
+            infoLabel.show(withDuration: 3)
+            shakeButtonAndFields()
             return
         }
         let userData = UserData(email: params["email"]!, password: params["password"]!)
@@ -132,20 +164,31 @@ extension LoginViewController {
     @IBAction func registerAction(_ sender: UIButton) {
         let params = getLoginInputData()
         if params.count == 0 {
-            alertUser(title: "Wrong entry", message: "Please check all the fields")
+            infoLabel.text = wrongEntryMessage
+            infoLabel.show(withDuration: 3)
+            shakeButtonAndFields()
             return
         }
         let userData = UserData(email: params["email"]!, password: params["password"]!)
         
-        ShowsApiClient.shared.registerUser(userData: userData, onSuccess: { (user) in
-            self.user = user
-            self.loginUser(userData: userData)
+        ShowsApiClient.shared.registerUser(userData: userData, onSuccess: { [weak self] (user) in
+            self?.user = user
+            self?.loginUser(userData: userData)
             
-        }) { (error) in
+        }) { [weak self] (error) in
+            self?.infoLabel.text = self?.wrongEntryMessage
+            self?.infoLabel.show(withDuration: 3)
+            self?.shakeButtonAndFields()
             print(error.localizedDescription)
         }
     }
     
+    @IBAction func rememberMeToggled(_ sender: UIButton) {
+        rememberMe = !rememberMe
+        sender.setImage(
+            UIImage(named: rememberMe ? "ic-checkbox-filled" : "ic-checkbox-empty"), for: .normal)
+    }
+
 }
 
 extension LoginViewController: UITextFieldDelegate {

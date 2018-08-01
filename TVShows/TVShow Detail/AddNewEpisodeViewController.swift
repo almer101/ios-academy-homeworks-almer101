@@ -20,6 +20,7 @@ class AddNewEpisodeViewController: UIViewController {
     @IBOutlet weak var seasonNumberTextField: UITextField!
     @IBOutlet weak var episodeNumberTextField: UITextField!
     @IBOutlet weak var episodeDescriptionTextField: UITextField!
+    @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
     private var showId: String? = nil
@@ -72,6 +73,8 @@ class AddNewEpisodeViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelAddingNewEpisode))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(didSelectAddEpisode))
         navigationController?.navigationBar.tintColor = UIColor.tvShowsPink
+        
+        infoLabel.alpha = 0
     }
     
     @objc func didCancelAddingNewEpisode() {
@@ -80,7 +83,9 @@ class AddNewEpisodeViewController: UIViewController {
     
     @objc func didSelectAddEpisode() {
         guard let ep = extractModelFromFields() else {
-            alertUser(title: "Invalid input", message: "Please check all the fields")
+//            alertUser(title: "Invalid input", message: "Please check all the fields")
+            shakeTextFields()
+            infoLabel.show(withDuration: 3)
             return
         }
         guard let id = showId else { return }
@@ -121,6 +126,13 @@ class AddNewEpisodeViewController: UIViewController {
         let closeAction = UIAlertAction(title: "Close", style: .cancel, handler: nil)
         alertViewController.addAction(closeAction)
         present(alertViewController, animated: true)
+    }
+    
+    func shakeTextFields() {
+        episodeTitleTextField.shake()
+        seasonNumberTextField.shake()
+        episodeNumberTextField.shake()
+        episodeDescriptionTextField.shake()
     }
     
 }

@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import SVProgressHUD
 import CodableAlamofire
+import Kingfisher
 
 class ShowsApiClient {
     
@@ -139,6 +140,24 @@ class ShowsApiClient {
             .responseDecodableObject(keyPath: "data") { (dataResponse: DataResponse<Episode>) in
                 completion(dataResponse)
         }
+    }
+    
+    func setPosterImage(forShow show: Show, onImageViewInCell cell: ShowListCollectionViewCell) {
+        if show.id == cell.showId {
+            setPosterImage(forImageUrl: show.imageUrl, onImageView: cell.showImageView)
+        }
+    }
+    
+    func setPosterImage(forShow show: Show, onImageViewInCell cell: ShowGridCollectionViewCell) {
+        if show.id == cell.showId {
+            setPosterImage(forImageUrl: show.imageUrl, onImageView: cell.showImageView)
+        }
+    }
+    
+    func setPosterImage(forImageUrl url: String, onImageView imageView: ImageView) {
+        let url = URL(string: "http://api.infinum.academy" + url)
+        imageView.kf.setImage(with: url)
+        
     }
     
     
