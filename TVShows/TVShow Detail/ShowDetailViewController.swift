@@ -23,8 +23,8 @@ class ShowDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.dataSource = self
-        tableView.delegate = self
+        setupTableView()
+
         navigationController?.setNavigationBarHidden(true, animated: true)
         SVProgressHUD.show()
         getShowDetails()
@@ -33,6 +33,19 @@ class ShowDetailViewController: UIViewController {
     func setup(show: Show, loginUser: LoginUser) {
         self.show = show
         self.loginUser = loginUser
+    }
+    
+    func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(refreshContent), for: .valueChanged)
+    }
+    
+    @objc func refreshContent() {
+        tableView.refreshControl?.beginRefreshing()
+        tableView.reloadData()
+        tableView.refreshControl?.endRefreshing()
     }
     
     @IBAction func returnToThePreviousScreen(_ sender: UIButton) {

@@ -42,6 +42,15 @@ class CommentsViewController: UIViewController {
     private func setupUI() {
         navigationController?.setNavigationBarHidden(false, animated: true)
         postButton.tintColor = .tvShowsPink
+        
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(refreshContent), for: .valueChanged)
+    }
+    
+    @objc func refreshContent() {
+        tableView.refreshControl?.beginRefreshing()
+        tableView.reloadData()
+        tableView.refreshControl?.endRefreshing()
     }
     
     private func loadComments() {
