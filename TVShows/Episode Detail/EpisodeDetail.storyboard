@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T51-Bl-08U">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="776"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="771"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="O3E-fr-eSb">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
@@ -34,7 +34,7 @@
                                                 </constraints>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LoO-nR-KhM">
-                                                <rect key="frame" x="0.0" y="300" width="375" height="476"/>
+                                                <rect key="frame" x="0.0" y="300" width="375" height="471"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RgP-K4-FZd">
                                                         <rect key="frame" x="15" y="15" width="345" height="30"/>
@@ -55,17 +55,17 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aGl-yc-Fgo">
-                                                        <rect key="frame" x="15" y="146" width="345" height="30"/>
+                                                        <rect key="frame" x="15" y="146" width="345" height="25"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comment-baloon" translatesAutoresizingMaskIntoConstraints="NO" id="3fJ-ip-Uu8">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-message-circle" translatesAutoresizingMaskIntoConstraints="NO" id="3fJ-ip-Uu8">
+                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="3fJ-ip-Uu8" secondAttribute="height" multiplier="1:1" id="V0v-fN-Hdb"/>
-                                                                    <constraint firstAttribute="height" constant="30" id="YVS-po-LwF"/>
+                                                                    <constraint firstAttribute="height" constant="25" id="YVS-po-LwF"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ENC-5t-6yd">
-                                                                <rect key="frame" x="40" y="5" width="84" height="21"/>
+                                                                <rect key="frame" x="35" y="2.5" width="84" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -220,7 +220,8 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gNI-d7-ggT">
-                                        <rect key="frame" x="311.5" y="10" width="43.5" height="30"/>
+                                        <rect key="frame" x="311.5" y="10.5" width="43.5" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <state key="normal" title="Post"/>
                                         <connections>
                                             <action selector="postComment:" destination="wl8-hA-ySM" eventType="touchUpInside" id="mGy-m2-icR"/>
@@ -298,7 +299,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="comment-baloon" width="250" height="202"/>
+        <image name="ic-message-circle" width="24" height="24"/>
         <image name="ic-navigate-back" width="32" height="32"/>
         <image name="img-placehoder-comments" width="107" height="102"/>
     </resources>
