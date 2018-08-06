@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C03140E2110BF2300E14233 /* EpisodeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C03140D2110BF2300E14233 /* EpisodeDetailViewController.swift */; };
+		2C0314102110BF3600E14233 /* EpisodeDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C03140F2110BF3600E14233 /* EpisodeDetail.storyboard */; };
+		2C0314122111916F00E14233 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0314112111916F00E14233 /* CommentsViewController.swift */; };
+		2C0314142111934A00E14233 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0314132111934A00E14233 /* Comment.swift */; };
+		2C0314162111984900E14233 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0314152111984900E14233 /* CommentTableViewCell.swift */; };
 		2C29CAD820FF43FE001776E2 /* UIColor+TVShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C29CAD720FF43FE001776E2 /* UIColor+TVShows.swift */; };
 		2C49244920FE12C2008DEBA7 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C49244820FE12C2008DEBA7 /* Show.swift */; };
 		2C62BF1620FCBEE400B87218 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C62BF1520FCBEE400B87218 /* HomeViewController.swift */; };
@@ -20,6 +25,7 @@
 		2C83B32520EE6F2F00781AB8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C83B32420EE6F2F00781AB8 /* AppDelegate.swift */; };
 		2C83B32C20EE6F3000781AB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C83B32B20EE6F3000781AB8 /* Assets.xcassets */; };
 		2C83B32F20EE6F3000781AB8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C83B32D20EE6F3000781AB8 /* LaunchScreen.storyboard */; };
+		2CA8F8DD210DCC2000E27DC5 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA8F8DC210DCC2000E27DC5 /* Media.swift */; };
 		2CAC7DBB21063E80003EF8B3 /* ShowDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC7DBA21063E80003EF8B3 /* ShowDetails.swift */; };
 		2CAC7DBD21070DA2003EF8B3 /* UIView+TVShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAC7DBC21070DA2003EF8B3 /* UIView+TVShows.swift */; };
 		2CB8CFD620F65E95004F7C26 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CB8CFD520F65E95004F7C26 /* Login.storyboard */; };
@@ -37,6 +43,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C03140D2110BF2300E14233 /* EpisodeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailViewController.swift; sourceTree = "<group>"; };
+		2C03140F2110BF3600E14233 /* EpisodeDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EpisodeDetail.storyboard; sourceTree = "<group>"; };
+		2C0314112111916F00E14233 /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		2C0314132111934A00E14233 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		2C0314152111984900E14233 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		2C29CAD720FF43FE001776E2 /* UIColor+TVShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+TVShows.swift"; sourceTree = "<group>"; };
 		2C49244820FE12C2008DEBA7 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		2C62BF1520FCBEE400B87218 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +63,7 @@
 		2C83B32B20EE6F3000781AB8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C83B32E20EE6F3000781AB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2C83B33020EE6F3000781AB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2CA8F8DC210DCC2000E27DC5 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		2CAC7DBA21063E80003EF8B3 /* ShowDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetails.swift; sourceTree = "<group>"; };
 		2CAC7DBC21070DA2003EF8B3 /* UIView+TVShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+TVShows.swift"; sourceTree = "<group>"; };
 		2CB8CFD520F65E95004F7C26 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
@@ -82,6 +94,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C03140C2110BF0B00E14233 /* Episode Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2C03140F2110BF3600E14233 /* EpisodeDetail.storyboard */,
+				2C03140D2110BF2300E14233 /* EpisodeDetailViewController.swift */,
+				2C0314112111916F00E14233 /* CommentsViewController.swift */,
+				2C0314132111934A00E14233 /* Comment.swift */,
+				2C0314152111984900E14233 /* CommentTableViewCell.swift */,
+			);
+			path = "Episode Detail";
+			sourceTree = "<group>";
+		};
 		2C49244720FE1278008DEBA7 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +121,7 @@
 		2C83B31820EE6F2E00781AB8 = {
 			isa = PBXGroup;
 			children = (
+				2C03140C2110BF0B00E14233 /* Episode Detail */,
 				2CF0FF3B2104722100A3344A /* TVShow Detail */,
 				2C49244720FE1278008DEBA7 /* Home */,
 				2CB8CFD420F65E7A004F7C26 /* Login */,
@@ -154,6 +179,7 @@
 				2CC23D3421048D16002663C8 /* ShowEpisode.swift */,
 				2CC23D362105C474002663C8 /* ImageViewTableViewCell.swift */,
 				2CC23D382105C482002663C8 /* DescriptionTableViewCell.swift */,
+				2CA8F8DC210DCC2000E27DC5 /* Media.swift */,
 			);
 			path = "TVShow Detail";
 			sourceTree = "<group>";
@@ -235,6 +261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C0314102110BF3600E14233 /* EpisodeDetail.storyboard in Resources */,
 				2CF0FF3D2104724100A3344A /* ShowDetail.storyboard in Resources */,
 				2CB8CFD620F65E95004F7C26 /* Login.storyboard in Resources */,
 				2C83B32F20EE6F3000781AB8 /* LaunchScreen.storyboard in Resources */,
@@ -300,12 +327,14 @@
 				2CC23D392105C482002663C8 /* DescriptionTableViewCell.swift in Sources */,
 				2C7252D720FDE13400C3F5D0 /* UserData.swift in Sources */,
 				2CC23D3521048D16002663C8 /* ShowEpisode.swift in Sources */,
+				2CA8F8DD210DCC2000E27DC5 /* Media.swift in Sources */,
 				2CC23D432105F3EA002663C8 /* AddNewEpisodeViewController.swift in Sources */,
 				2C7ABD5F210AFF6F007D3812 /* LayoutType.swift in Sources */,
 				2CB8CFD820F65EA7004F7C26 /* LoginViewController.swift in Sources */,
 				2C7252D520FDDC4A00C3F5D0 /* LoginUser.swift in Sources */,
 				2C7ABD61210B0242007D3812 /* ShowListCollectionViewCell.swift in Sources */,
 				2C29CAD820FF43FE001776E2 /* UIColor+TVShows.swift in Sources */,
+				2C03140E2110BF2300E14233 /* EpisodeDetailViewController.swift in Sources */,
 				2C83B32520EE6F2F00781AB8 /* AppDelegate.swift in Sources */,
 				2CC23D372105C474002663C8 /* ImageViewTableViewCell.swift in Sources */,
 				2C7252D320FDD81200C3F5D0 /* User.swift in Sources */,
@@ -313,8 +342,11 @@
 				2C49244920FE12C2008DEBA7 /* Show.swift in Sources */,
 				2CBE6F32210A068600ACD650 /* Constants.swift in Sources */,
 				2C62BF1620FCBEE400B87218 /* HomeViewController.swift in Sources */,
+				2C0314142111934A00E14233 /* Comment.swift in Sources */,
+				2C0314162111984900E14233 /* CommentTableViewCell.swift in Sources */,
 				2C7ABD63210B024B007D3812 /* ShowGridCollectionViewCell.swift in Sources */,
 				2CAC7DBD21070DA2003EF8B3 /* UIView+TVShows.swift in Sources */,
+				2C0314122111916F00E14233 /* CommentsViewController.swift in Sources */,
 				2CF0FF3F2104730500A3344A /* ShowDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

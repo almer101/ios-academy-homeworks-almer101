@@ -23,8 +23,8 @@ class ShowDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.dataSource = self
-        tableView.delegate = self
+        setupTableView()
+
         navigationController?.setNavigationBarHidden(true, animated: true)
         SVProgressHUD.show()
         getShowDetails()
@@ -33,6 +33,19 @@ class ShowDetailViewController: UIViewController {
     func setup(show: Show, loginUser: LoginUser) {
         self.show = show
         self.loginUser = loginUser
+    }
+    
+    func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(refreshContent), for: .valueChanged)
+    }
+    
+    @objc func refreshContent() {
+        tableView.refreshControl?.beginRefreshing()
+        tableView.reloadData()
+        tableView.refreshControl?.endRefreshing()
     }
     
     @IBAction func returnToThePreviousScreen(_ sender: UIButton) {
@@ -169,6 +182,15 @@ extension ShowDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 || indexPath.row == 1 { return }
+        guard let viewController = UIStoryboard(name: "EpisodeDetail", bundle: nil).instantiateViewController(withIdentifier: "EpisodeDetailViewController") as? EpisodeDetailViewController else { return }
+       
+        let episode = episodes[indexPath.row - 2]
+        viewController.episode = episode
+        viewController.loginUser = loginUser
+        
+        navigationController?.pushViewController(viewController, animated: true)
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

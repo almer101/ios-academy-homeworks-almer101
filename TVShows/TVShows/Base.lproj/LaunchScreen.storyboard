@@ -17,7 +17,16 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.52046227331606221" green="0.52046227331606221" blue="0.52046227331606221" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img-splash-logo" translatesAutoresizingMaskIntoConstraints="NO" id="qgd-CR-vwm">
+                                <rect key="frame" x="123" y="259.5" width="129" height="148"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="qgd-CR-vwm" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="VhU-UL-8Jv"/>
+                            <constraint firstItem="qgd-CR-vwm" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Wm4-HE-Sa6"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -26,4 +35,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="img-splash-logo" width="129" height="148"/>
+    </resources>
 </document>

@@ -44,6 +44,14 @@ class HomeViewController: UIViewController {
             let layoutType = LayoutType(rawValue: type) {
             self.layoutType = layoutType
         }
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(refreshContent), for: .valueChanged)
+    }
+    
+    @objc func refreshContent() {
+        collectionView.refreshControl?.beginRefreshing()
+        collectionView.reloadData()
+        collectionView.refreshControl?.endRefreshing()
     }
     
     @objc func logoutUser() {

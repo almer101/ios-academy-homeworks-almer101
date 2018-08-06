@@ -9,7 +9,7 @@
 import Foundation
 
 struct LoginUser: Codable {
-    
+
     let token: String
 }
 

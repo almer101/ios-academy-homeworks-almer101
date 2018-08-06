@@ -127,7 +127,7 @@ class ShowsApiClient {
     }
     
     func addEpisode(loginUser: LoginUser, toShowWithId showId: String, episode: Episode, completion: @escaping (DataResponse<Episode>) -> Void) {
-        let params = ["showId" : showId, "mediaId" : "", "title" : episode.title, "description" : episode.description, "episodeNumber" : episode.episodeNumber, "season" : episode.season]
+        let params = ["showId" : showId, "mediaId" : episode.mediaId ?? "", "title" : episode.title, "description" : episode.description, "episodeNumber" : episode.episodeNumber, "season" : episode.season]
         let headers = ["Authorization": loginUser.token]
         
         Alamofire
@@ -160,5 +160,58 @@ class ShowsApiClient {
         
     }
     
+    func uploadImageOnAPI(token: String, image: UIImage, showId: String, completion: @escaping (SessionManager.MultipartFormDataEncodingResult) -> Void) {
+        let headers = ["Authorization" : token]
+        guard let imageByteData = UIImagePNGRepresentation(image) else { return }
+
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageByteData,
+                                     withName: "file",
+                                     fileName: "image.jpg",
+                                     mimeType: "image/png")
+        }, to: "\(baseURL)/api/media", method: .post, headers: headers) { (result) in
+            completion(result)
+        }
+
+    }
+    
+    func getComments(loginUser: LoginUser, forEpisode episode: Episode, completion: @escaping (DataResponse<[Comment]>) -> Void) {
+        let headers = ["Authorization" : loginUser.token]
+        Alamofire.request("\(baseURL)/api/episodes/\(episode.id)/comments",
+            method: .get,
+            parameters: nil,
+            encoding: JSONEncoding.default,
+            headers: headers)
+            .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+            { (dataResponse: DataResponse<[Comment]>) in
+                completion(dataResponse)
+        }
+    }
+    
+    func postComment(loginUser: LoginUser, comment: Comment, completion: @escaping (DataResponse<Comment>) -> Void) {
+        let params = ["text" : comment.text, "episodeId" : comment.episodeId]
+        let headers = ["Authorization" : loginUser.token]
+        
+        Alamofire.request("\(baseURL)/api/comments",
+                        method: .post,
+                        parameters: params,
+                        encoding: JSONEncoding.default,
+                        headers: headers)
+                .validate()
+            .responseDecodableObject(keyPath: "data", decoder: JSONDecoder())
+            { (dataResponse: DataResponse<Comment>) in
+                completion(dataResponse)
+        }
+        
+    }
     
 }
+
+
+
+
+
+
+
+
